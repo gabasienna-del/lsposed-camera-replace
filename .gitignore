@@ -1,5 +1,22 @@
+# Gradle
 .gradle/
 build/
-local.properties
+**/build/
+
+# Kotlin compiler (remove it)
+kotlinc/
+kotlin-compiler*.zip
+
+# Local caches
+*.log
+*.bak
+*.b64
+
+# Android artifacts
+*.apk
+*.ap_
+captures/
+
+# IDE
 .idea/
 *.iml
