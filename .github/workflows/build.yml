@@ -1,6 +1,10 @@
-name: Build LSHookCamera
+name: Build APK
 
 on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
   workflow_dispatch:
 
 jobs:
@@ -17,14 +21,28 @@ jobs:
           distribution: temurin
           java-version: 17
 
-      - name: Grant execute permission to gradlew
+      - name: Install Android SDK
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y unzip wget
+          mkdir -p $HOME/android-sdk/cmdline-tools
+          cd $HOME/android-sdk
+          wget -q https://dl.google.com/android/repository/commandlinetools-linux-10406996_latest.zip -O tools.zip
+          unzip -q tools.zip -d cmdline-tools
+          yes | cmdline-tools/cmdline-tools/bin/sdkmanager --licenses
+          cmdline-tools/cmdline-tools/bin/sdkmanager \
+            "platform-tools" \
+            "platforms;android-34" \
+            "build-tools;34.0.0"
+
+      - name: Make gradlew executable
         run: chmod +x ./gradlew
 
-      - name: Build APK
+      - name: Build Debug APK
         run: ./gradlew assembleDebug --stacktrace
 
       - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
-          name: LSHookCamera-debug
+          name: LSModule-debug
           path: app/build/outputs/apk/debug/app-debug.apk
