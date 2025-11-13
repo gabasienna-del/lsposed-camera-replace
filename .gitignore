@@ -1,22 +1,27 @@
-# Gradle
-.gradle/
-build/
-**/build/
+/.gradle/
+/build/
+/app/build/
+/local.properties
 
-# Kotlin compiler (remove it)
-kotlinc/
-kotlin-compiler*.zip
+# Android Studio
+/.idea/
+/*.iml
 
-# Local caches
+# Android SDK / Tools
+/android-sdk/
+/sdk/
+/kotlinc/
+/*.zip
+
+# Logs
 *.log
 *.bak
-*.b64
 
-# Android artifacts
-*.apk
-*.ap_
-captures/
+# Xposed API leftovers
+app/libs/*.b64
+app/libs/*.bak
+app/libs/*.kt
 
-# IDE
-.idea/
-*.iml
+# OS files
+.DS_Store
+Thumbs.db
