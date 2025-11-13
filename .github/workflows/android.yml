@@ -28,9 +28,8 @@ jobs:
           key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*','**/gradle-wrapper.properties') }}
           restore-keys: ${{ runner.os }}-gradle-
 
-      - name: Download Android command-line tools
+      - name: Install Android SDK Command-line tools
         run: |
-          set -e
           mkdir -p $HOME/android-sdk/cmdline-tools
           wget -q -O /tmp/cmdline-tools.zip "https://dl.google.com/android/repository/commandlinetools-linux-9477386_latest.zip"
           unzip -q /tmp/cmdline-tools.zip -d /tmp/cmdline
@@ -38,18 +37,13 @@ jobs:
           export ANDROID_SDK_ROOT=$HOME/android-sdk
           yes | $HOME/android-sdk/cmdline-tools/latest/bin/sdkmanager --sdk_root=$ANDROID_SDK_ROOT "platform-tools" "platforms;android-33" "build-tools;33.0.2"
 
-      - name: Show Java & Gradle version
-        run: |
-          java -version
-          ./gradlew --version
-
       - name: Build debug APK
         env:
           ANDROID_SDK_ROOT: $HOME/android-sdk
-        run: ./gradlew assembleDebug --no-daemon --stacktrace
+        run: ./gradlew assembleDebug --stacktrace
 
-      - name: Upload APK artifact
-        uses: actions/upload-artifact@v3
+      - name: Upload APK
+        uses: actions/upload-artifact@v4
         with:
-          name: app-debug-apk
+          name: app-debug
           path: app/build/outputs/apk/debug/*.apk
